@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Alert from "./components/Alert";
 import { observer } from "mobx-react-lite";
+import Header from "./components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
