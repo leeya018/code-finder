@@ -3,10 +3,15 @@
 import { useEffect, useState } from "react";
 import Form from "./components/Form";
 import { CodeItem } from "@/interfaces/CodeItem";
-import { addCodeItemApi, deleteCodeItemApi } from "@/firestore";
-import { getCodeItems } from "@/firestore/codeItem/getCodeItems";
+import {
+  addCodeItemApi,
+  deleteCodeItemApi,
+  getCodeItemsApi,
+} from "@/firestore";
 import CodeListItems from "./components/CodeListItems";
 import Filter from "./components/Filter";
+import { messageStore } from "@/stores/messageStore";
+import { observer } from "mobx-react-lite";
 
 const Home: React.FC = () => {
   const [entries, setEntries] = useState<CodeItem[]>([]);
@@ -14,13 +19,18 @@ const Home: React.FC = () => {
   const [filteredEntries, setFilteredEntries] = useState<CodeItem[]>([]);
 
   useEffect(() => {
-    getCodeItems()
+    getCodeItemsApi()
       .then((codeItems) => {
         setEntries(codeItems);
         setFilteredEntries(codeItems);
+        messageStore.setMessage({
+          type: "success",
+          text: "fetch file succesfully",
+        });
       })
       .catch((e: any) => {
         console.log(e);
+        messageStore.setMessage({ type: "error", text: e.message });
       });
   }, []);
   const handleFormSubmit = async (data: CodeItem) => {
@@ -30,8 +40,13 @@ const Home: React.FC = () => {
       console.log(entries);
       setFilteredEntries([...entries, { id: docId, ...data }]);
       setIsFormModalOpen(false);
-    } catch (error) {
+      messageStore.setMessage({
+        type: "success",
+        text: "added file succesfully",
+      });
+    } catch (error: any) {
       console.log(error);
+      messageStore.setMessage({ type: "error", text: error.message });
     }
   };
 
@@ -53,8 +68,13 @@ const Home: React.FC = () => {
       const newEntries = entries.filter((entry) => entry.id !== docId);
       setEntries(newEntries);
       setFilteredEntries(newEntries);
-    } catch (error) {
+      messageStore.setMessage({
+        type: "success",
+        text: "deleted file succesfully",
+      });
+    } catch (error: any) {
       console.log(error);
+      messageStore.setMessage({ type: "error", text: error.message });
     }
   };
 
@@ -100,4 +120,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default observer(Home);

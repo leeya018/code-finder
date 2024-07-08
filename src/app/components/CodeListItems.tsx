@@ -1,6 +1,8 @@
 // components/CodeListItems.tsx
 import { deleteCodeItemApi } from "@/firestore";
 import { CodeItem } from "@/interfaces/CodeItem";
+import { messageStore } from "@/stores/messageStore";
+import { observer } from "mobx-react-lite";
 import { useState } from "react";
 
 interface CodeListItemsProps {
@@ -16,7 +18,8 @@ const CodeListItems: React.FC<CodeListItemsProps> = ({ entries, onDelete }) => {
 
   const handleDelete = () => {
     if (selectedCodeItem && deleteTitle === selectedCodeItem.title) {
-      onDelete(selectedCodeItem.id);
+      if (!selectedCodeItem?.id) throw new Error("selectedCodeItem has not Id");
+      onDelete(selectedCodeItem?.id);
       setSelectedCodeItem(null);
       setDeleteTitle("");
     }
@@ -76,4 +79,4 @@ const CodeListItems: React.FC<CodeListItemsProps> = ({ entries, onDelete }) => {
   );
 };
 
-export default CodeListItems;
+export default observer(CodeListItems);
