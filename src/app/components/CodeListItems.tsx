@@ -8,9 +8,14 @@ import { useState } from "react";
 interface CodeListItemsProps {
   entries: CodeItem[];
   onDelete: (title: string) => void;
+  isLoading: boolean;
 }
 
-const CodeListItems: React.FC<CodeListItemsProps> = ({ entries, onDelete }) => {
+const CodeListItems: React.FC<CodeListItemsProps> = ({
+  entries,
+  onDelete,
+  isLoading,
+}) => {
   const [selectedCodeItem, setSelectedCodeItem] = useState<CodeItem | null>(
     null
   );
@@ -27,6 +32,8 @@ const CodeListItems: React.FC<CodeListItemsProps> = ({ entries, onDelete }) => {
 
   return (
     <div>
+      {isLoading && <div>Loading...</div>}
+      {!isLoading && entries.length === 0 && <div>List is Empty</div>}
       <ul className="list-disc pl-5">
         {entries.map((entry, index) => (
           <li

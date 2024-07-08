@@ -19,6 +19,7 @@ const Home: React.FC = () => {
   const [entries, setEntries] = useState<CodeItem[]>([]);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [filteredEntries, setFilteredEntries] = useState<CodeItem[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     getCodeItemsApi()
@@ -29,11 +30,13 @@ const Home: React.FC = () => {
           type: "success",
           text: "fetch codeItems succesfully",
         });
+        setIsLoading(false);
       })
       .catch((e: any) => {
         console.log(e);
         messageStore.setMessage({ type: "error", text: e.message });
       });
+    setIsLoading(false);
   }, []);
   const handleFormSubmit = async (data: CodeItem) => {
     try {
@@ -96,7 +99,11 @@ const Home: React.FC = () => {
           </button>
         </div>
         <Filter onFilter={handleFilter} />
-        <CodeListItems entries={filteredEntries} onDelete={handleDelete} />
+        <CodeListItems
+          entries={filteredEntries}
+          onDelete={handleDelete}
+          isLoading={isLoading}
+        />
         {/* <Form onSubmit={handleFormSubmit} /> */}
         {isFormModalOpen && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
