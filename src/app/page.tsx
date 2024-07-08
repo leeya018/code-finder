@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Form from "./components/Form";
 import { CodeItem } from "@/interfaces/CodeItem";
-import { addCodeItemApi } from "@/firestore";
+import { addCodeItemApi, deleteCodeItemApi } from "@/firestore";
 import { getCodeItems } from "@/firestore/codeItem/getCodeItems";
 import CodeListItems from "./components/CodeListItems";
 import Filter from "./components/Filter";
@@ -11,12 +11,13 @@ import Filter from "./components/Filter";
 const Home: React.FC = () => {
   const [entries, setEntries] = useState<CodeItem[]>([]);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
-  const [filteredEntries, setFilteredEntries] = useState<CodeItem[]>(entries);
+  const [filteredEntries, setFilteredEntries] = useState<CodeItem[]>([]);
 
   useEffect(() => {
     getCodeItems()
       .then((codeItems) => {
         setEntries(codeItems);
+        setFilteredEntries(codeItems);
       })
       .catch((e: any) => {
         console.log(e);
@@ -40,6 +41,17 @@ const Home: React.FC = () => {
     }
   };
 
+  const handleDelete = async (docId: string) => {
+    try {
+      await deleteCodeItemApi(docId);
+      const newEntries = entries.filter((entry) => entry.id !== docId);
+      setEntries(newEntries);
+      setFilteredEntries(newEntries);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <h1 className="text-3xl font-bold text-center mb-6">
@@ -54,7 +66,7 @@ const Home: React.FC = () => {
         </button>
       </div>
       <Filter onFilter={handleFilter} />
-      <CodeListItems entries={filteredEntries} />
+      <CodeListItems entries={filteredEntries} onDelete={handleDelete} />
       {/* <Form onSubmit={handleFormSubmit} /> */}
       {isFormModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
