@@ -14,6 +14,6 @@ export const getCodeItems = async (): Promise<CodeItem[]> => {
     return todeItems;
   } catch (error: any) {
     console.error("Error fetching codeItems: ", error);
-    throw new Error("Failed to fetch houses");
+    throw error;
   }
 };

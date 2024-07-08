@@ -10,5 +10,6 @@ export const deleteCodeItem = async (docId: string): Promise<any> => {
     console.log(`Document with ID ${docId} deleted successfully.`);
   } catch (error) {
     console.error("Error deleting document:", error);
+    throw error;
   }
 };

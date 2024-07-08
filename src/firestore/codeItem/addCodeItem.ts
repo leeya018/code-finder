@@ -33,5 +33,6 @@ export const addCodeItem = async (codeItem: CodeItem) => {
     // return { ...codeItem, id: docRef.id };
   } catch (error) {
     console.error("Error adding document: ", error);
+    throw error;
   }
 };
