@@ -5,14 +5,22 @@ import {
   addDoc,
   collection,
   doc,
+  getDocs,
+  query,
   setDoc,
+  where,
 } from "firebase/firestore";
 
 export const addCodeItem = async (codeItem: CodeItem) => {
   try {
-    // if (user.role !== "admin") {
-    //   throw new Error("insuffisent permission for adding new house ");
-    // }
+    const q = query(
+      collection(db, "codeItems"),
+      where("title", "==", codeItem.title)
+    );
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      throw new Error("this title is allraedy exists ");
+    }
     const docRef: DocumentReference = await addDoc(
       collection(db, "codeItems"),
       {
@@ -21,7 +29,8 @@ export const addCodeItem = async (codeItem: CodeItem) => {
       }
     );
     console.log("Document written with ID: ", docRef.id);
-    return { ...codeItem, id: docRef.id };
+    return docRef.id;
+    // return { ...codeItem, id: docRef.id };
   } catch (error) {
     console.error("Error adding document: ", error);
   }

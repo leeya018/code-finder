@@ -23,10 +23,16 @@ const Home: React.FC = () => {
         console.log(e);
       });
   }, []);
-  const handleFormSubmit = (data: CodeItem) => {
-    setEntries([...entries, data]);
-    addCodeItemApi(data);
-    setIsFormModalOpen(false);
+  const handleFormSubmit = async (data: CodeItem) => {
+    try {
+      const docId = await addCodeItemApi(data);
+      console.log({ id: docId, ...data });
+      console.log(entries);
+      setFilteredEntries([...entries, { id: docId, ...data }]);
+      setIsFormModalOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleFilter = (query: string) => {
