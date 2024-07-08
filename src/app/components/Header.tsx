@@ -8,12 +8,14 @@ import { getAuth, signOut } from "firebase/auth";
 
 import { toJS } from "mobx";
 import userStore from "@/stores/userStore";
+import { useRouter } from "next/navigation";
 // components/Header.js
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const auth = getAuth();
+  const router = useRouter();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -39,6 +41,9 @@ const Header = () => {
       <nav className="mx-10">
         <ul className="flex justify-between items-center">
           <li>Code Finder</li>
+          <li>
+            <Link href="/settings">Settings</Link>
+          </li>
           <div className="flex items-center gap-4">
             <Image
               className="rounded-full"

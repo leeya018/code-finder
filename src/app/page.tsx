@@ -27,7 +27,7 @@ const Home: React.FC = () => {
         setFilteredEntries(codeItems);
         messageStore.setMessage({
           type: "success",
-          text: "fetch file succesfully",
+          text: "fetch codeItems succesfully",
         });
       })
       .catch((e: any) => {
