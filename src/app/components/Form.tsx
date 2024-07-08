@@ -67,6 +67,7 @@ const Form: React.FC<FormProps> = ({ onSubmit, onClose }) => {
         <textarea
           id="code"
           value={code}
+          rows={20}
           onChange={(e) => setCode(e.target.value)}
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           required

@@ -38,12 +38,13 @@ const Home: React.FC = () => {
       });
     setIsLoading(false);
   }, []);
+
   const handleFormSubmit = async (data: CodeItem) => {
     try {
       const docId = await addCodeItemApi(data);
       console.log({ id: docId, ...data });
       console.log(entries);
-      setFilteredEntries([...entries, { id: docId, ...data }]);
+      setFilteredEntries((prev) => [...prev, { id: docId, ...data }]);
       setIsFormModalOpen(false);
       messageStore.setMessage({
         type: "success",

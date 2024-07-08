@@ -1,18 +1,13 @@
 import { db } from "@/firebase";
-import { getFirestore, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
-export const updateHouse = async (
-  houseId: string,
+export const updateDocItem = async (
+  docId: string,
   info: any
 ): Promise<void> => {
-  try {
-    const houseRef = doc(db, "houses", houseId);
-    await updateDoc(houseRef, {
-      ...info,
-    });
-    console.log(`House ${houseId} updated successfully.`);
-  } catch (error: any) {
-    console.error("Error updating house: ", error);
-    throw new Error("Failed to update house");
-  }
+  const houseRef = doc(db, "codeItems", docId);
+  await updateDoc(houseRef, {
+    ...info,
+  });
+  console.log(`docId ${docId} updated successfully.`);
 };

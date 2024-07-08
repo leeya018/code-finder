@@ -15,7 +15,6 @@ export const getUser = async (user: User) => {
       role: "user",
       displayName: user.displayName,
       photoURL: user.photoURL,
-      purchases: [],
       createdAt: new Date(),
     });
   }
