@@ -7,9 +7,10 @@ interface FormProps {
     description: string;
     code: string;
   }) => void;
+  onClose: () => void;
 }
 
-const Form: React.FC<FormProps> = ({ onSubmit }) => {
+const Form: React.FC<FormProps> = ({ onSubmit, onClose }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [code, setCode] = useState("");
@@ -20,13 +21,11 @@ const Form: React.FC<FormProps> = ({ onSubmit }) => {
     setTitle("");
     setDescription("");
     setCode("");
+    onClose(); // Close the modal after submission
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md"
-    >
+    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
       <div className="mb-4">
         <label
           htmlFor="title"
@@ -73,12 +72,21 @@ const Form: React.FC<FormProps> = ({ onSubmit }) => {
           required
         />
       </div>
-      <button
-        type="submit"
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-      >
-        Submit
-      </button>
+      <div className="flex justify-end">
+        <button
+          type="button"
+          onClick={onClose}
+          className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Submit
+        </button>
+      </div>
     </form>
   );
 };
