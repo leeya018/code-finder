@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { getUserApi } from "@/firestore";
 import userStore from "@/stores/userStore";
 
-function login() {
+const SettingsPage: React.FC = () => {
   const router = useRouter();
   const inputRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -75,5 +75,5 @@ function login() {
       </div>
     </div>
   );
-}
-export default observer(login);
+};
+export default observer(SettingsPage);
