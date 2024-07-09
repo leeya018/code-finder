@@ -7,6 +7,7 @@ import {
   addCodeItemApi,
   deleteCodeItemApi,
   getCodeItemsApi,
+  updateCodeItemApi,
 } from "@/firestore";
 import CodeListItems from "./components/CodeListItems";
 import Filter from "./components/Filter";
@@ -86,6 +87,24 @@ const Home: React.FC = () => {
       messageStore.setMessage({ type: "error", text: error.message });
     }
   };
+  const handleUpdate = async (docId: string, info: any) => {
+    try {
+      await updateCodeItemApi(docId, info);
+      const newCodeItem = { id: docId, ...info };
+      const newEntries = entries.map((entry) =>
+        entry.id == docId ? newCodeItem : entry
+      );
+      setEntries(newEntries);
+      setFilteredEntries(newEntries);
+      messageStore.setMessage({
+        type: "success",
+        text: "updated file succesfully",
+      });
+    } catch (error: any) {
+      console.log(error);
+      messageStore.setMessage({ type: "error", text: error.message });
+    }
+  };
 
   return (
     <ProtectedRoute>
@@ -104,6 +123,7 @@ const Home: React.FC = () => {
         </div>
         <Filter onFilter={handleFilter} />
         <CodeListItems
+          onUpdate={handleUpdate}
           entries={filteredEntries}
           onDelete={handleDelete}
           isLoading={isLoading}

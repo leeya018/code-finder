@@ -13,12 +13,14 @@ interface CodeListItemsProps {
   entries: CodeItem[];
   onDelete: (title: string) => void;
   isLoading: boolean;
+  onUpdate: (docId: string, updatedItem: any) => void;
 }
 
 const CodeListItems: React.FC<CodeListItemsProps> = ({
   entries,
   onDelete,
   isLoading,
+  onUpdate,
 }) => {
   const [selectedCodeItem, setSelectedCodeItem] = useState<CodeItem | null>(
     null
@@ -62,6 +64,7 @@ const CodeListItems: React.FC<CodeListItemsProps> = ({
         }
       >
         <CodeItemContent
+          onUpdate={onUpdate}
           selectedCodeItem={selectedCodeItem}
           onClose={() => {
             setSelectedCodeItem(null);

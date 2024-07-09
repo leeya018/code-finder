@@ -1,7 +1,7 @@
 import { db } from "@/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 
-export const updateDocItem = async (
+export const updateCodeItem = async (
   docId: string,
   info: any
 ): Promise<void> => {
