@@ -19,11 +19,6 @@ const Header = () => {
     setShowLogout(!showLogout);
   };
   const auth = getAuth();
-  const router = useRouter();
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
 
   const logoutUser = async () => {
     try {
