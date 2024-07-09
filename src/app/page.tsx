@@ -14,10 +14,12 @@ import { messageStore } from "@/stores/messageStore";
 import { observer } from "mobx-react-lite";
 import ProtectedRoute from "./components/protectedRoute";
 import Header from "./components/Header";
+import Modal from "./components/Modal";
+import { ModalStore } from "@/stores/modalStore";
+import { modals } from "@/util";
 
 const Home: React.FC = () => {
   const [entries, setEntries] = useState<CodeItem[]>([]);
-  const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [filteredEntries, setFilteredEntries] = useState<CodeItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -45,7 +47,8 @@ const Home: React.FC = () => {
       console.log({ id: docId, ...data });
       console.log(entries);
       setFilteredEntries((prev) => [...prev, { id: docId, ...data }]);
-      setIsFormModalOpen(false);
+      // setIsFormModalOpen(false);
+      ModalStore.closeModal();
       messageStore.setMessage({
         type: "success",
         text: "added file succesfully",
@@ -93,7 +96,7 @@ const Home: React.FC = () => {
         </h1>
         <div className="flex justify-center mb-6">
           <button
-            onClick={() => setIsFormModalOpen(true)}
+            onClick={() => ModalStore.openModal(modals.addCodeItem)}
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           >
             Add Code Item
@@ -105,17 +108,13 @@ const Home: React.FC = () => {
           onDelete={handleDelete}
           isLoading={isLoading}
         />
-        {/* <Form onSubmit={handleFormSubmit} /> */}
-        {isFormModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 md:w-1/2">
-              <Form
-                onSubmit={handleFormSubmit}
-                onClose={() => setIsFormModalOpen(false)}
-              />
-            </div>
-          </div>
-        )}
+        <Modal isOpen={ModalStore.modalName === modals.addCodeItem}>
+          <Form
+            onSubmit={handleFormSubmit}
+            onClose={() => ModalStore.closeModal()}
+          />
+        </Modal>
+
         {/*  the full list */}
         {/* <div className="mt-8">
         {entries.map((entry, index) => (
