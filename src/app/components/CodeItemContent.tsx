@@ -31,7 +31,7 @@ const CodeItemContent: React.FC<CodeItemContentProps> = ({
     <div>
       <h2 className="text-2xl font-bold mb-4">{selectedCodeItem?.title}</h2>
       <p className="mb-4">{selectedCodeItem?.description}</p>
-      <pre className="bg-gray-100 p-2 rounded overflow-auto mb-4 relative">
+      <pre className="bg-gray-100 p-2 rounded overflow-auto mb-4 relative overflow-y-auto max-h-96">
         <button
           className="absolute right-2 top-2"
           onClick={() => {
