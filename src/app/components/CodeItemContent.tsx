@@ -19,6 +19,7 @@ const CodeItemContent: React.FC<CodeItemContentProps> = ({
   onDelete,
 }) => {
   const [deleteTitle, setDeleteTitle] = useState("");
+  const [copyTxtBtn, setCopyTxtBtn] = useState("copy");
 
   const handleDelete = () => {
     if (selectedCodeItem && deleteTitle === selectedCodeItem.title) {
@@ -30,7 +31,17 @@ const CodeItemContent: React.FC<CodeItemContentProps> = ({
     <div>
       <h2 className="text-2xl font-bold mb-4">{selectedCodeItem?.title}</h2>
       <p className="mb-4">{selectedCodeItem?.description}</p>
-      <pre className="bg-gray-100 p-2 rounded overflow-auto mb-4">
+      <pre className="bg-gray-100 p-2 rounded overflow-auto mb-4 relative">
+        <button
+          className="absolute right-2 top-2"
+          onClick={() => {
+            if (!selectedCodeItem?.code) return;
+            navigator.clipboard.writeText(selectedCodeItem.code);
+            setCopyTxtBtn("Copied");
+          }}
+        >
+          {copyTxtBtn}
+        </button>
         <code>{selectedCodeItem?.code}</code>
       </pre>
       <div className="mb-4">
