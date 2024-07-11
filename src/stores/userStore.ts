@@ -1,3 +1,4 @@
+import { getUserApi } from "@/firestore/user/getUser";
 import { autorun, makeAutoObservable, toJS } from "mobx";
 
 class UserS {
@@ -12,14 +13,17 @@ class UserS {
       this.user = null;
       return;
     }
-    const { photoURL, uid, displayName, email, role } = newUser;
-    this.user = { photoURL, userId: uid, displayName, email, role };
+    const { photoURL, uid, displayName, email } = newUser;
+    this.user = { photoURL, uid, displayName, email };
   };
 
-  updateUser = (newUser: any) => {
-    const { photoURL, uid, displayName, email } = newUser;
-    this.user = { ...this.user, photoURL, uid, displayName, email };
+  updateUser = (info: any) => {
+    this.user = { ...this.user, ...info };
   };
+
+  clearUser() {
+    this.user = null;
+  }
 }
 
 const userStore = new UserS();

@@ -2,10 +2,11 @@
 // SettingsPage.tsx
 import React, { useState } from "react";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
-import { deleteAllCodeItemsApi } from "@/firestore";
 import { messageStore } from "@/stores/messageStore";
 import ProtectedRoute from "../components/protectedRoute";
 import Header from "../components/Header";
+import { deleteAllCodeItemsApi } from "@/firestore/codeItem/deleteAllCodeItems";
+import userStore from "@/stores/userStore";
 
 const SettingsPage: React.FC = () => {
   const [password, setPassword] = useState("");
@@ -13,7 +14,7 @@ const SettingsPage: React.FC = () => {
   const handleDeleteAll = async () => {
     try {
       if (password === process.env.NEXT_PUBLIC_PAST_DELETION) {
-        await deleteAllCodeItemsApi();
+        await deleteAllCodeItemsApi(userStore.user.uid);
         messageStore.setMessage({
           type: "success",
           text: "all codeItems deleted succesfully",

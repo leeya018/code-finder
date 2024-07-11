@@ -1,12 +1,11 @@
 // components/Form.tsx
+import { CodeItem } from "@/interfaces/CodeItem";
+import userStore from "@/stores/userStore";
+import { Timestamp } from "firebase/firestore";
 import { useState } from "react";
 
 interface FormProps {
-  onSubmit: (data: {
-    title: string;
-    description: string;
-    code: string;
-  }) => void;
+  onSubmit: (codeItem: CodeItem) => void;
   onClose: () => void;
 }
 
@@ -17,7 +16,15 @@ const Form: React.FC<FormProps> = ({ onSubmit, onClose }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ title, description, code });
+    const userId = userStore.user.uid;
+    const newCodeItem: CodeItem = {
+      title,
+      description,
+      code,
+      userId,
+      createdAt: Timestamp.now(),
+    };
+    onSubmit(newCodeItem);
     setTitle("");
     setDescription("");
     setCode("");

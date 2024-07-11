@@ -12,8 +12,8 @@ import Image from "next/image";
 
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/navigation";
-import { getUserApi } from "@/firestore";
 import userStore from "@/stores/userStore";
+import { getUserApi } from "@/firestore/user/getUser";
 
 const SettingsPage: React.FC = () => {
   const router = useRouter();
@@ -26,7 +26,7 @@ const SettingsPage: React.FC = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       const userData = await getUserApi(user);
-      userStore.setUser(userData);
+      userStore.updateUser(userData);
 
       console.log({ userData });
       router.push("/");

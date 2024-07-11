@@ -1,19 +1,22 @@
 import { db } from "@/firebase";
 import { CodeItem } from "@/interfaces/CodeItem";
 
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { findUserApi } from "../user/findUser";
 
-export const getCodeItems = async (): Promise<CodeItem[]> => {
-  try {
-    const housesCollection = collection(db, "codeItems");
-    const houseSnapshot = await getDocs(housesCollection);
-    const todeItems = houseSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as CodeItem[];
-    return todeItems;
-  } catch (error: any) {
-    console.error("Error fetching codeItems: ", error);
-    throw error;
-  }
+export const getCodeItemsApi = async (userId: string): Promise<CodeItem[]> => {
+  if (!userId) throw new Error("id of user not defiend");
+  await findUserApi(userId);
+
+  const q = query(
+    collection(db, "codeItems"),
+    where("userId", "==", userId),
+    orderBy("createdAt")
+  );
+  const querySnapshot = await getDocs(q);
+  const codeItems = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as CodeItem[];
+  return codeItems;
 };

@@ -3,12 +3,7 @@
 import { useEffect, useState } from "react";
 import Form from "./components/Form";
 import { CodeItem } from "@/interfaces/CodeItem";
-import {
-  addCodeItemApi,
-  deleteCodeItemApi,
-  getCodeItemsApi,
-  updateCodeItemApi,
-} from "@/firestore";
+
 import CodeListItems from "./components/CodeListItems";
 import Filter from "./components/Filter";
 import { messageStore } from "@/stores/messageStore";
@@ -18,6 +13,11 @@ import Header from "./components/Header";
 import Modal from "./components/Modal";
 import { ModalStore } from "@/stores/modalStore";
 import { modals } from "@/util";
+import { getCodeItemsApi } from "@/firestore/codeItem/getCodeItems";
+import userStore from "@/stores/userStore";
+import { addCodeItemApi } from "@/firestore/codeItem/addCodeItem";
+import { deleteCodeItemApi } from "@/firestore/codeItem/deleteCodeItem";
+import { updateCodeItemApi } from "@/firestore/codeItem/updateCodeItem";
 
 const Home: React.FC = () => {
   const [entries, setEntries] = useState<CodeItem[]>([]);
@@ -25,26 +25,28 @@ const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    getCodeItemsApi()
-      .then((codeItems) => {
-        setEntries(codeItems);
-        setFilteredEntries(codeItems);
-        messageStore.setMessage({
-          type: "success",
-          text: "fetch codeItems succesfully",
+    if (userStore.user) {
+      getCodeItemsApi(userStore.user.uid)
+        .then((codeItems) => {
+          setEntries(codeItems);
+          setFilteredEntries(codeItems);
+          messageStore.setMessage({
+            type: "success",
+            text: "fetch codeItems succesfully",
+          });
+          setIsLoading(false);
+        })
+        .catch((e: any) => {
+          console.log(e);
+          messageStore.setMessage({ type: "error", text: e.message });
         });
-        setIsLoading(false);
-      })
-      .catch((e: any) => {
-        console.log(e);
-        messageStore.setMessage({ type: "error", text: e.message });
-      });
-    setIsLoading(false);
-  }, []);
+      setIsLoading(false);
+    }
+  }, [userStore.user]);
 
   const handleFormSubmit = async (data: CodeItem) => {
     try {
-      const docId = await addCodeItemApi(data);
+      const docId = await addCodeItemApi(userStore.user.uid, data);
       console.log({ id: docId, ...data });
       console.log(entries);
       setFilteredEntries((prev) => [...prev, { id: docId, ...data }]);
@@ -74,7 +76,7 @@ const Home: React.FC = () => {
 
   const handleDelete = async (docId: string) => {
     try {
-      await deleteCodeItemApi(docId);
+      await deleteCodeItemApi(userStore.user.uid, docId);
       const newEntries = entries.filter((entry) => entry.id !== docId);
       setEntries(newEntries);
       setFilteredEntries(newEntries);
@@ -89,7 +91,7 @@ const Home: React.FC = () => {
   };
   const handleUpdate = async (docId: string, info: any) => {
     try {
-      await updateCodeItemApi(docId, info);
+      await updateCodeItemApi(userStore.user.uid, docId, info);
       const newCodeItem = { id: docId, ...info };
       const newEntries = entries.map((entry) =>
         entry.id == docId ? newCodeItem : entry
