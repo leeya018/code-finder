@@ -29,6 +29,21 @@ const InstructionsPage: React.FC = () => {
           To edit a codeItem, simply double-click on it. The codeItem will open
           in a modal view where you can make your changes.
         </p>
+
+        <div>
+          <div>how to use</div>
+          <div className="youtube-embed">
+            <iframe
+              width="700"
+              height="455"
+              src={`https://www.youtube.com/embed/nA-o12kyimM`}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title="Embedded YouTube Video"
+            ></iframe>
+          </div>
+        </div>
       </div>
     </ProtectedRoute>
   );
