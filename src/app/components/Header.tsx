@@ -47,6 +47,9 @@ const Header = () => {
           <li className="cursor-pointer">
             <Link href="/settings">Settings</Link>
           </li>
+          <li className="cursor-pointer">
+            <Link href="/instructions">Instructions</Link>
+          </li>
         </ul>
         <div className="relative flex items-center">
           <Image
