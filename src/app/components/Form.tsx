@@ -22,7 +22,6 @@ const Form: React.FC<FormProps> = ({ onSubmit, onClose }) => {
       description,
       code,
       userId,
-      createdAt: Timestamp.now(),
     };
     onSubmit(newCodeItem);
     setTitle("");

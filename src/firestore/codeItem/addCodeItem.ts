@@ -18,7 +18,8 @@ export const addCodeItemApi = async (userId: string, codeItem: CodeItem) => {
 
   const q = query(
     collection(db, "codeItems"),
-    where("title", "==", codeItem.title)
+    where("title", "==", codeItem.title),
+    where("userId", "==", userId)
   );
   const querySnapshot = await getDocs(q);
   if (!querySnapshot.empty) {
