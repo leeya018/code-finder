@@ -42,7 +42,7 @@ const Home: React.FC = () => {
         });
       setIsLoading(false);
     }
-  }, [userStore.user]);
+  }, []);
 
   const handleFormSubmit = async (data: CodeItem) => {
     try {

@@ -29,7 +29,7 @@ const ProtectedRoute: FC<ProtectedRouteProps> = observer(({ children }) => {
     });
 
     return () => unSub();
-  }, []);
+  }, [router]);
 
   if (isLoading) {
     return <div>Loading ....</div>;
