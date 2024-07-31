@@ -1,5 +1,4 @@
 // components/CodeListItems.tsx
-import { deleteCodeItemApi } from "@/firestore";
 import { CodeItem } from "@/interfaces/CodeItem";
 import { messageStore } from "@/stores/messageStore";
 import { ModalStore } from "@/stores/modalStore";

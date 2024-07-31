@@ -28,7 +28,7 @@ const CodeItemContent: React.FC<CodeItemContentProps> = ({
   );
 
   const handleDelete = () => {
-    if (selectedCodeItem && deleteTitle === selectedCodeItem.title) {
+    if (selectedCodeItem) {
       onDelete();
     }
   };
