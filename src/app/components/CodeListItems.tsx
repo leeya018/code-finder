@@ -27,7 +27,7 @@ const CodeListItems: React.FC<CodeListItemsProps> = ({
   const [deleteTitle, setDeleteTitle] = useState("");
 
   const handleDelete = () => {
-    if (selectedCodeItem && deleteTitle === selectedCodeItem.title) {
+    if (selectedCodeItem) {
       if (!selectedCodeItem?.id) throw new Error("selectedCodeItem has not Id");
       onDelete(selectedCodeItem?.id);
       setSelectedCodeItem(null);
